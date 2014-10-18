@@ -1,0 +1,34 @@
+#dashboard
+{
+
+}
+
+    #dashboard .device
+    {
+        width: 200px;
+        height: 200px;
+    }
+
+        #dashboard .device.toggleDevice .panel-body
+        {
+            text-align: center;
+            padding-top: 60px;
+        }
+
+#emptyDashboard
+{
+    margin-top: 100px;
+    text-align: center;
+}
+
+    #emptyDashboard h1
+    {
+        color: silver;
+        padding-bottom: 20px;
+    }
+
+#addDeviceModal #searchingIndicator
+{
+    text-align: center;
+    padding: 22px;
+}
