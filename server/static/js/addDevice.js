@@ -30,6 +30,7 @@
             contentType: "application/json",
             data: JSON.stringify(selectedDevice),
             success: function (res) {
+                ns.updateDeviceList();
                 modal.modal('hide');
             },
             error: function (res) {

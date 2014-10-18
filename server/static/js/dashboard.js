@@ -1,8 +1,9 @@
 (function(ns, undefined) {
     "use strict";
 
-    var dashboard = $("#dashboard #dashboardItems");
-    var loadingIndicator = $("#dashboard .searchingIndicator");
+    var dashboard = $("#dashboard");
+    var dashboardItems = $("#dashboard #dashboardItems");
+    var loadingIndicator = $("#dashboardLoading .searchingIndicator");
     var emptyDashboardWidget = $("#emptyDashboard");
 
     var devices = [];
@@ -14,14 +15,19 @@
                 loadingIndicator.hide();
                 if (res.devices.length)
                 {
+                    emptyDashboardWidget.hide();
+                    dashboard.show();
+
                     if (res.devices.length != devices.length)
                     {
                         devices = _.clone(res.devices);
-                        dashboard.empty();
+                        dashboardItems.empty();
 
-                        $.each(res.devices, function (index, device) {
-                            $.get("/static/partials/dashboardItem.html", function (template) {
-                                dashboard.append(Mustache.render(template, device));
+                        $.each(res.devices, function (index, deviceInfo) {
+                            var device = new ns.Device(deviceInfo);
+
+                            device.getDOM(function (dom) {
+                                dashboardItems.append(dom);
                             });
                         });
                     }

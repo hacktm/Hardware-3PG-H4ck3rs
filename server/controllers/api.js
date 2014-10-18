@@ -72,12 +72,37 @@ router.post("/addDevice", function (req, res) {
     });
 });
 
-router.get("/deviceList", function (req, res) {
+router.delete("/removeDevice/:deviceId", function (req, res) {
     fs.readFile(DEVICES_FILE, function (err, data) {
         if (!err)
         {
-            res.send({status: "ok", devices: JSON.parse(data) });
+            var devices = JSON.parse(data);
+
+            var newDevices = _.filter(devices, function (device) {
+                return device.id != req.params.deviceId;
+            });
+
+            if (devices.length != newDevices.length)
+            {
+                fs.writeFile(DEVICES_FILE, JSON.stringify(newDevices), function (err) {
+                    if (!err)
+                        res.send({status: "ok", removed: req.params.deviceId });
+                    else
+                        res.status(500).send({status: "error", message:"Can't write device to file"});
+                });
+            }
+            else
+                res.status(500).send({status: "error", message: "Device not found" });
         }
+        else
+            res.status(500).send({status: "error", messsage: "Can't read devices from list"});
+    });
+});
+
+router.get("/deviceList", function (req, res) {
+    fs.readFile(DEVICES_FILE, function (err, data) {
+        if (!err)
+            res.send({status: "ok", devices: JSON.parse(data) });
         else
             res.status(500).send({status: "error", messsage: "Can't read devices from list"});
     });
