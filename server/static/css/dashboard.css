@@ -1,3 +1,15 @@
+.searchingIndicator
+{
+    text-align: center;
+    padding: 22px;
+}
+
+    .searchingIndicator .loadingMessage
+    {
+        color: silver;
+        margin-top: 10px;
+    }
+
 #dashboard
 {
 
@@ -9,16 +21,32 @@
         height: 200px;
     }
 
+        #dashboard .device .deviceName .fa
+        {
+            margin-left: 10px;
+        }
+
+        #dashboard .device .deviceName .fa.fa-times:hover
+        {
+            color: #b20000;
+        }
+
+        #dashboard .device .icon
+        {
+            font-size: 70px;
+            color: #dfdfdf;
+        }
+
         #dashboard .device.toggleDevice .panel-body
         {
             text-align: center;
-            padding-top: 60px;
         }
 
 #emptyDashboard
 {
     margin-top: 100px;
     text-align: center;
+    display: none;
 }
 
     #emptyDashboard h1
@@ -26,9 +54,3 @@
         color: silver;
         padding-bottom: 20px;
     }
-
-#addDeviceModal #searchingIndicator
-{
-    text-align: center;
-    padding: 22px;
-}

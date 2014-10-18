@@ -76,9 +76,7 @@ router.get("/deviceList", function (req, res) {
     fs.readFile(DEVICES_FILE, function (err, data) {
         if (!err)
         {
-            setTimeout(function () {
-                res.send({status: "ok", devices: JSON.parse(data) });
-            }, SIMULATED_DELAY);
+            res.send({status: "ok", devices: JSON.parse(data) });
         }
         else
             res.status(500).send({status: "error", messsage: "Can't read devices from list"});

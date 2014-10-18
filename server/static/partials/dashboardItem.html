@@ -1,11 +1,15 @@
 <div class="panel panel-default device toggleDevice">
     <div class="panel-heading">
-        <h3 class="panel-title">
+        <h3 class="panel-title deviceName">
             <i class="fa fa-times close"></i>
-            Device name
+            <i class="fa fa-calendar close"></i>
+            {{manufacturer}} {{name}}
         </h3>
     </div>
     <div class="panel-body">
+        <div class="icon">
+            <i class="fa fa-power-off"></i>
+        </div>
         <div class="btn-group toggle" data-toggle="buttons">
             <label class="btn btn-primary active">
                 <input type="radio" name="options" id="option1" checked /> On

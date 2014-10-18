@@ -1,5 +1,12 @@
 {% extends "base.html" %}
 
+{% macro loading(message) %}
+<div class="searchingIndicator">
+    <img src="/static/img/searching.gif" alt="Searching" />
+    <div class="loadingMessage">{{message}}</div>
+</div>
+{% endmacro %}
+
 {% block styles %}
     <link rel="stylesheet" href="/static/css/dashboard.css" />
 {% endblock %}
@@ -12,6 +19,11 @@
 
 {% block content %}
     <div id="dashboard">
+        {{ loading("Retriving device list ...") }}
+
+        <div id="dashboardItems">
+
+        </div>
     </div>
 
     <div id="emptyDashboard">
@@ -36,11 +48,9 @@
                             <i class="fa fa-times"></i>
                         </button>
                         <span></span>
+                    </div>
 
-                    </div>
-                    <div id="searchingIndicator">
-                        <img src="/static/img/searching.gif" alt="Searching" />
-                    </div>
+                    {{ loading("Scanning for devices ...") }}
 
                     <table class="table table-condensed table-striped">
                         <thead>

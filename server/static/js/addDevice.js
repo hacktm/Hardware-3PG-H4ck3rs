@@ -6,7 +6,7 @@
 
     var modal = $("#addDeviceModal");
     var modalError = $("#modalError");
-    var modalSearchingIndicator = $("#addDeviceModal #searchingIndicator");
+    var loadingIndicator = $("#addDeviceModal .searchingIndicator");
     var deviceList = $("#deviceList tbody");
     var deviceTable = $("#deviceList table");
     var addDeviceBtn = $("#addDeviceBtn");
@@ -43,7 +43,7 @@
 
     function showDeviceList()
     {
-        modalSearchingIndicator.show();
+        loadingIndicator.show();
         deviceTable.hide();
         modalError.hide();
 
@@ -62,7 +62,7 @@
                     deviceList.append(Mustache.render(template, templateInfo));
                 });
 
-                modalSearchingIndicator.hide();
+                loadingIndicator.hide();
                 deviceTable.show();
             });
         });
