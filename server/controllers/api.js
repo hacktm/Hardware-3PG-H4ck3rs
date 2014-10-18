@@ -109,13 +109,13 @@ router.get("/deviceList", function (req, res) {
 });
 
 
-router.get("/state/:deviceId", function (req, res) {
+router.get("/getState/:deviceId", function (req, res) {
     setTimeout(function () {
         res.send({status:"ok", device: req.params.deviceId, state: "on"});
     }, SIMULATED_DELAY);
 });
 
-router.post("/state/:deviceId/:state", function (req, res) {
+router.post("/setState/:deviceId/:state", function (req, res) {
     setTimeout(function () {
         res.send({status: "ok", device: req.params.deviceId, state: req.params.state});
     }, SIMULATED_DELAY);
