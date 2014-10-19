@@ -13,6 +13,7 @@
                 type: "delete",
                 success: $.proxy(function () {
                     this.dom.remove();
+                    ns.updateDeviceList();
                 }, this)
             });
         },
