@@ -35,7 +35,7 @@
                                     break;
                             }
                             console.log(device);
-
+                            
                             device.getDOM(function (dom) {
                                 dashboardItems.append(dom);
                             });

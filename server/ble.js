@@ -55,8 +55,10 @@ BLE.prototype.sendCommand = function(uuid, service, characteristic, data, callba
 			testService.discoverCharacteristics([characteristic], function(error, characteristics) {
 				var testCharacteristic = characteristics[0];
 
-				testCharacteristic.write(data, false, callback);
-					//testCharacteristic.read(function(error, data){});
+                if (data)
+				    testCharacteristic.write(data, false, callback);
+                else
+                    testCharacteristic.read(callback);
 			});
 		});
 	});

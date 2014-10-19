@@ -50,8 +50,8 @@ router.post("/addDevice", function (req, res) {
         if (!err)
         {
             devices = JSON.parse(data);
-
-            if (!_.find(devices, function (item) {return item.id == device.id && item.type == device.type;}))
+            var existingDevice = _.find(devices, function (item) {return item.uuid == device.uuid && item.type == device.type;});
+            if (!existingDevice)
             {
                 devices.push(device);
 
@@ -73,14 +73,14 @@ router.post("/addDevice", function (req, res) {
     });
 });
 
-router.delete("/removeDevice/:deviceId", function (req, res) {
+router.delete("/removeDevice/:deviceId/:deviceType", function (req, res) {
     fs.readFile(DEVICES_FILE, function (err, data) {
         if (!err)
         {
+            console.log(req.params)
             var devices = JSON.parse(data);
-
             var newDevices = _.filter(devices, function (device) {
-                return device.id != req.params.deviceId;
+                return device.uuid != req.params.deviceId || device.type != req.params.deviceType;
             });
 
             if (devices.length != newDevices.length)
@@ -117,16 +117,28 @@ router.get("/getState/:deviceId", function (req, res) {
 });
 
 router.post("/setState/:deviceId/:state", function (req, res) {
-	var state = req.params.state == "on" ? new Buffer([255, 255, 255]) : new Buffer([0, 0, 0]); 
-	
-	
- 	ble.sendCommand("ceb46771d02e", '2220', '2222', state, function (err){
-		if (!err)
-			res.send({status: "ok", device: req.params.deviceId, state: req.params.state});
-		else
-			res.status(500).send({status: "error", message: "Bluetooth error"});
-	});    
+    var state = req.params.state == "on" ? new Buffer([255, 255, 255]) : new Buffer([0, 0, 0]);
+
+    ble.sendCommand(req.params.deviceId, '2220', '2222', state, function (err){
+        if (!err)
+            res.send({status: "ok", state: req.params.state});
+        else
+            res.status(500).send({status: "error", message: "Bluetooth error"});
+    });
 });
+
+router.get("/getTemperature/:deviceId", function (req, res) {
+    ble.sendCommand(req.params.deviceId, '2220', '2221', null, function (err, data){
+        if (!err)
+        {
+            var temp = data.readUInt8(0, false) << 16 | data.readUInt16BE(1, false);
+            res.send({status: "ok", temp: temp / 10});
+        }
+        else
+            res.status(500).send({status: "error", message: "Bluetooth error"});
+    });
+});
+
 
 
 module.exports = router;

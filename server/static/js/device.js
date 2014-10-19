@@ -9,7 +9,7 @@
     Device.prototype = {
         remove: function () {
             $.ajax({
-                url: "/api/removeDevice/" + this.deviceInfo.id,
+                url: "/api/removeDevice/" + this.deviceInfo.uuid + "/" + this.deviceInfo.type,
                 type: "delete",
                 success: $.proxy(function () {
                     this.dom.remove();
@@ -48,7 +48,7 @@
             var state = $("[name=state]:checked").val();
 
             $.ajax({
-                url: "/api/sendComman/" + this.deviceInfo.id + "/" + state,
+                url: "/api/setState/" + this.deviceInfo.uuid + "/" + state,
                 type: "post",
                 success: $.proxy(function (res) {
                     if (state == "on")
@@ -74,14 +74,19 @@
     {
         this.deviceInfo = deviceInfo;
         this.dom = null;
-
+        setInterval($.proxy(this.updateTemp, this), 1000);
     }
 
     $.extend(TempDevice.prototype, Device.prototype);
 
     TempDevice.prototype = $.extend(TempDevice.prototype, {
         updateTemp: function () {
-            console.log("Temp!");
+            $.ajax({
+                url: "/api/getTemperature/" + this.deviceInfo.uuid,
+                success: $.proxy(function(res){
+                    this.dom.find(".temp").html(res.temp);
+                }, this)
+            })
         }
     });
 
