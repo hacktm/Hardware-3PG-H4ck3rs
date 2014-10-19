@@ -51,7 +51,7 @@ router.post("/addDevice", function (req, res) {
         {
             devices = JSON.parse(data);
 
-            if (!_.find(devices, function (item) {return item.id == device.id;}))
+            if (!_.find(devices, function (item) {return item.id == device.id && item.type == device.type;}))
             {
                 devices.push(device);
 

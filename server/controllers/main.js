@@ -3,13 +3,7 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res) {
-    if (req.user)
-    {
-        res.redirect("/dashboard");
-        return;
-    }
-
-    res.render('index.html');
+    res.redirect("/dashboard");
 });
 
 router.get("/dashboard", function (req, res) {
