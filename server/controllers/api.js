@@ -2,6 +2,8 @@ var express = require('express');
 var router = express.Router();
 var _ = require('lodash');
 
+var ble = require("../ble");
+
 var fs = require('fs');
 
 var mockDevices = [
@@ -27,10 +29,9 @@ var mockDevices = [
 var DEVICES_FILE = "devices.json";
 var SIMULATED_DELAY = 1000;
 
-router.get("/discover", function (req, res) {
-    setTimeout(function () {
-        res.send({status: "ok", devices: mockDevices  });
-    }, SIMULATED_DELAY);
+router.get("/discover", function (req, res) {	
+
+    res.send({status: "ok", devices: ble.getDevices() });
 });
 
 router.post("/addDevice", function (req, res) {
@@ -116,9 +117,15 @@ router.get("/getState/:deviceId", function (req, res) {
 });
 
 router.post("/setState/:deviceId/:state", function (req, res) {
-    setTimeout(function () {
-        res.send({status: "ok", device: req.params.deviceId, state: req.params.state});
-    }, SIMULATED_DELAY);
+	var state = req.params.state == "on" ? new Buffer([255, 255, 255]) : new Buffer([0, 0, 0]); 
+	
+	
+ 	ble.sendCommand("ceb46771d02e", '2220', '2222', state, function (err){
+		if (!err)
+			res.send({status: "ok", device: req.params.deviceId, state: req.params.state});
+		else
+			res.status(500).send({status: "error", message: "Bluetooth error"});
+	});    
 });
 
 

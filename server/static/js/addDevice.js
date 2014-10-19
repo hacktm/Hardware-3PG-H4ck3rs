@@ -49,24 +49,27 @@
         modalError.hide();
 
         modal.modal();
+		
+		setInterval(function(){
+		    $.ajax({
+		        url: "/api/discover",
+		    }).success(function (res) {
+		        devices = res.devices;
 
-        $.ajax({
-            url: "/api/discover",
-        }).success(function (res) {
-            devices = res.devices;
+		        $.get("/static/partials/deviceListRow.html", function (template) {
+		            deviceList.empty();
+		            $.each(devices, function (index, device) {
+		                var templateInfo =  _.clone(device);
+		                templateInfo.index = index;
+		                deviceList.append(Mustache.render(template, templateInfo));
+		            });
 
-            $.get("/static/partials/deviceListRow.html", function (template) {
-                deviceList.empty();
-                $.each(devices, function (index, device) {
-                    var templateInfo =  _.clone(device);
-                    templateInfo.index = index;
-                    deviceList.append(Mustache.render(template, templateInfo));
-                });
-
-                loadingIndicator.hide();
-                deviceTable.show();
-            });
-        });
+		            loadingIndicator.hide();
+		            deviceTable.show();
+		        });
+		    });
+		
+		}, 1000);
     }
 
     $(document).on("change", "[name='selectedDevice']", handleDeviceListChange);

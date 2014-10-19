@@ -42,5 +42,6 @@
         });
     };
 
-    setInterval(ns.updateDeviceList, 1000);
+	ns.updateDeviceList();
+//    setInterval(ns.updateDeviceList, 1000);
 }(io.pible));
